@@ -1,5 +1,9 @@
 from PIL import Image
 import numpy as np
+import random
+
+#Constants
+NUM_SHAPES = 100
 
 #--------------- Loads the target image ---------------
 target_img = Image.open("target.png").convert("RGB")
@@ -27,3 +31,22 @@ def fitness(chromosome):
     max_diff = 255**2 * 3 * W * H  # worst possible difference between the two images
     
     return 1.0 - (diff / max_diff)  # 1.0 = perfect match, 0.0 = worst, cannot give a number outside of 1-0
+
+#--------------- Random shape generator ---------------
+
+def random_point():
+    return (random.randint(0, W), random.randint(0, H))
+
+def random_shape():
+    return {
+        "points": [random_point(), random_point(), random_point()],
+        "color": (
+            random.randint(0, 255),  # R
+            random.randint(0, 255),  # G
+            random.randint(0, 255),  # B
+            random.randint(30, 180)  # Alpha — not fully transparent or opaque
+        )
+    }
+
+def random_chromosome():
+    return [random_shape() for _ in range(NUM_SHAPES)]
